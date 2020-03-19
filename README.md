@@ -39,8 +39,7 @@ Roll can understand one command:
 Currently Rollo can understand commands written in:
 - English
 - Italiano
-Work in progress:
-- Español
+- Español ( work in progress )
 
 ###To Do
 
