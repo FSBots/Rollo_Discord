@@ -41,7 +41,7 @@ Currently Rollo can understand commands written in:
 - Italiano
 - Español ( work in progress )
 
-###To Do
+### To Do
 
 - Prittier icon
 - More elegant exception management
