@@ -33,7 +33,7 @@ Roll can understand one command:
 
 # you can also write
 
--tira 6D6 = 5 vantaggio
+-tira 6D6 + 5 vantaggio
 
 ```
 Currently Rollo can understand commands written in:
