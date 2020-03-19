@@ -4,7 +4,7 @@ Dice roller bot for Discord
 
 ## Version 0.1
 
-Currently in alpha state: are presents some minor bug and the bot couldn't be online h24/7
+Currently in alpha state: minor bugs are presents and the bot couldn't be online h24/7
 
 ### Requirements
 
@@ -13,7 +13,7 @@ If you  want help with development of the code, make sure to install requirement
 $ pip install discord.py
 ```
 
-### Add to your Discord Server
+### Add Rollo to your Discord Server
 
 You can find Rollo bot [Here](https://discordapp.com/api/oauth2/authorize?client_id=689609277584834581&permissions=67584&scope=bot)
 
