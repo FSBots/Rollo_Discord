@@ -1,17 +1,26 @@
+import discord
+from discord.ext import commands
 from Rollo import Rollo
 
-rollo = Rollo()
-rollo.parse("tira (3D1  +4) vantaggio")
-print("______________________________________")
-rollo.parse("roll (1D20+4d4) ")
-print("______________________________________")
-rollo.parse("tiro ( D20+ 4)")
-print("______________________________________")
-rollo.parse("tiro  D20+ 4)")
-print("______________________________________")
-rollo.parse("tiro mazunna D20+ 4)")
-print("______________________________________")
-rollo.parse("tiro D20 D20+ 4)")
-print("______________________________________")
-rollo.parse("tiro DS10 D20+ 4)")
-print("______________________________________")
+client = commands.Bot(command_prefix='-')
+
+@client.event
+async def on_ready():
+    print('Rollo Ready! <3')
+
+@client.command(aliases=['tiro','arronza','rolla'])
+async def roll(ctx,*,expression):
+    try:
+        rollo = Rollo()
+        rollo.parse(expression)
+    except:
+        await ctx.send("cu o' cazzo")
+    await ctx.send(rollo.getResultString())
+    
+
+
+
+client.run('')
+#rollo = Rollo()
+##rollo.parse("tira (3D1  +4) vantaggio")
+#print("______________________________________")

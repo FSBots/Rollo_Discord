@@ -3,14 +3,15 @@ from random import randrange
 class Rollo:
     nsp = None
     char_list = ["+","-","/","*","(",")","[","]","{","}"]
-    advantage_keyword_list = ["VANTAGGIO","ADVANTAGE"]
-    disadvantage_keyword_list = ["SVANTAGGIO","DISADVANTAGE"]
+    advantage_keyword_list = ["VANTAGGIO","ADVANTAGE","VENTAJA"]
+    disadvantage_keyword_list = ["SVANTAGGIO","DISADVANTAGE","DESVENTAJA"]
     keyword_list = ["TIRO","TIRA","ROLL"]
     wordsListBackup = []
     wordsList = []
     parsed = ""
     result = ""
     result2 = ""
+    diceRolled = 0
     isACorrectCommand = False
     isACorrectExpression = False
     advantage = 0 # 0: none 1:advantage -1: disadvantage
@@ -21,30 +22,30 @@ class Rollo:
         toParse = self.addSpaces(toParse).upper()
         #print("ToParse => "+str(toParse))
         self.wordsList = self.separateWords(toParse)
-        self.checkCommand()
+        #self.checkCommand()
         self.checkAdvantageDisadvantage()
-        if self.isACorrectCommand: # i found a "roll" keyword
-            self.parsed = " ".join(self.wordsList)
-            if self.advantage!=0: #I backup words list because it will be modified by rollDices
-                self.wordsListBackup = self.wordsList.copy()
-            self.result = " ".join(self.rollDices())
-            self.checkExpression()
-            if self.advantage!=0: #Launch a second time becaus i found advantage or disadvantage keyword
-                self.wordsList = self.wordsListBackup
-                self.result2 = " ".join(self.rollDices())
-            if self.isACorrectExpression:
-                try:
-                    self.result += " = "+str(self.nsp.eval(self.result))
-                    if self.advantage != 0:
-                        self.result2 += " = "+str(self.nsp.eval(self.result2))
-                        self.result += "\n" +self.result2
+        #if self.isACorrectCommand: # i found a "roll" keyword
+        self.parsed = " ".join(self.wordsList)
+        if self.advantage!=0: #I backup words list because it will be modified by rollDices
+            self.wordsListBackup = self.wordsList.copy()
+        self.result = " ".join(self.rollDices())
+        self.checkExpression()
+        if self.advantage!=0: #Launch a second time becaus i found advantage or disadvantage keyword
+            self.wordsList = self.wordsListBackup
+            self.result2 = " ".join(self.rollDices())
+        if self.isACorrectExpression:
+            try:
+                self.result += " = "+str(self.nsp.eval(self.result))
+                if self.advantage != 0:
+                    self.result2 += " = "+str(self.nsp.eval(self.result2))
+                    self.result += "\n" +self.result2
                     #print("words list: "+str(self.wordsList))
-                except:
-                    self.result = "ERROR INCORRECT MATH EXPRESSION"
-                print("parsed: "+self.parsed)
-                print("result: "+self.result)   
-            else:
-                self.result = ""
+            except:
+                self.result = "ERROR INCORRECT MATH EXPRESSION"
+        print("parsed: "+self.parsed)
+        print("result: "+self.result)   
+            #else:
+                #self.result = ""
     def checkAdvantageDisadvantage(self):#advantage disadvantage must be put as last keyword on the command line
         if self.wordsList[-1] in self.advantage_keyword_list:
             self.advantage = 1
@@ -58,6 +59,11 @@ class Rollo:
         return self.parsed
     def getResultString(self):
         return self.result
+
+    def countDiceRolled(self):
+        self.diceRolled+=1
+        if(self.diceRolled>20):
+            raise "TOO MUCH DICES!"
 
     def addSpaces(self,string):
         #insert spaces in-between dices and math simbols
@@ -125,6 +131,7 @@ class Rollo:
         index = 0
         index = self.findDice(self.wordsList)
         while(index!=-1):
+            self.countDiceRolled()
             self.wordsList[index] = str(self.roll(self.wordsList[index]))
             index = self.findDice(self.wordsList)
         
@@ -147,7 +154,9 @@ class Rollo:
                 times = 1
                 faces = int(numberList[1])
         except:
-            return ""
+            raise "INVALID DICE"
+        if faces>100 or times>100:
+            raise "INVALID DICE"
         rolledDicesList = []
         for i in range(times):
             rolledDicesList.append(randrange(faces)+1)
