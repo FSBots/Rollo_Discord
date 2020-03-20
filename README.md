@@ -10,7 +10,7 @@ Currently in alpha state: minor bugs are presents and the bot couldn't be online
 
 If you  want help with development of the code, make sure to install requirements first:
 ```
-$ pip install discord.py
+$ pip install discord.py pyparsing
 ```
 
 ### Add Rollo to your Discord Server
